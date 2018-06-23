@@ -15,11 +15,10 @@ build:
 
 requirements:
   build:
-    - {{ compiler('fortran') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-  host:
     - m4
+  host:
 
 test:
   files:
