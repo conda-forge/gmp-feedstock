@@ -23,6 +23,9 @@ requirements:
   host:
 
 test:
+  requires:
+    - {{ compiler('c') }}
+
   files:
     - test.c
 
