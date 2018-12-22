@@ -7,3 +7,6 @@ chmod +x configure
 make
 make check
 make install
+
+# This overlaps with libgcc-ng:
+rm -rf ${PREFIX}/share/info/dir
