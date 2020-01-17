@@ -1,4 +1,4 @@
-{% set version = "6.1.2" %}
+{% set version = "6.2.0" %}
 
 package:
   name: gmp
@@ -7,10 +7,10 @@ package:
 source:
   fn: gmp-{{ version }}.tar.bz2
   url: https://gmplib.org/download/gmp/gmp-{{ version }}.tar.bz2
-  sha256: 5275bb04f4863a13516b2f39392ac5e272f5e1bb8057b18aec1c9b79d73d8fb2
+  sha256: f51c99cb114deb21a60075ffb494c1a210eb9d7cb729ed042ddb7de9534451ea
 
 build:
-  number: 1000
+  number: 0
   skip: true  # [win]
   run_exports:
     - {{ pin_subpackage("gmp") }}
