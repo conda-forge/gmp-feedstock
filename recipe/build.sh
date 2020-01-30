@@ -2,7 +2,7 @@
 
 chmod +x configure
 
-./configure --prefix=$PREFIX --enable-cxx --enable-fat
+./configure --prefix=$PREFIX --enable-cxx --enable-fat --host=$HOST
 
 make
 make check
