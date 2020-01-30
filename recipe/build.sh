@@ -6,6 +6,9 @@ if [[ "$target_platform" == "linux-ppc64le" ]]; then
   # HOST="powerpc64le-conda-linux-gnu" masks the fact that we are only
   # building for power8 and uses an older POWER architecture.
   GMP_HOST="power8-pc-linux-gnu"
+else if [[ "$target_platform" == "linux-aarch64" ]]; then
+  # Same here. Support Cortex-A53 and above only.
+  GMP_HOST="armcortexa53-pc-linux-gnu"
 else
   GMP_HOST=$HOST
 fi
