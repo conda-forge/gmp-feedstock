@@ -22,6 +22,7 @@ make install
 
 if [[ "$target_platform" == "linux-ppc64le" ]]; then
     # Build a Power9 library as well
+    CFLAGS=$(echo "${CFLAGS}" | sed "s/=power8/=power9/g")
     ./configure --prefix=$PREFIX --enable-cxx --enable-fat --host="power9-pc-linux-gnu"
     make -j${CPU_COUNT}
     make install DESTDIR=$PWD/install
