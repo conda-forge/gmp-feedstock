@@ -1,4 +1,6 @@
 #!/bin/bash
+# Get an updated config.sub and config.guess
+cp $BUILD_PREFIX/share/libtool/build-aux/config.* .
 
 shopt -s extglob
 chmod +x configure
@@ -17,7 +19,9 @@ fi
 ../configure --prefix=$PREFIX --enable-cxx --enable-fat --host=$GMP_HOST
 
 make -j${CPU_COUNT}
+if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
 make check -j${CPU_COUNT}
+fi
 make install
 
 if [[ "$target_platform" == "linux-ppc64le" ]]; then
