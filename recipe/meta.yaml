@@ -10,7 +10,7 @@ source:
   patches:
     # Patch taken from homebrew. https://raw.githubusercontent.com/Homebrew/formula-patches/c53834b4/gmp/6.2.0-arm.patch
     # Originially from https://gmplib.org/list-archives/gmp-bugs/2020-July/004837.html
-    - 6.2.0-arm.patch
+    - 6.2.0-arm.patch  # [osx and arm64]
 
 build:
   number: 2
@@ -21,6 +21,8 @@ build:
 requirements:
   build:
     - libtool  # [unix]
+    - autoconf  # [osx and arm64]
+    - automake  # [osx and arm64]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - m4
