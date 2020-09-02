@@ -1,7 +1,14 @@
 #!/bin/bash
+# Get an updated config.sub and config.guess
+cp $BUILD_PREFIX/share/libtool/build-aux/config.guess config.fsf.guess
+cp $BUILD_PREFIX/share/libtool/build-aux/config.sub config.fsf.sub
 
 shopt -s extglob
 chmod +x configure
+
+if [[ "$target_platform" == osx-arm64 ]]; then
+  autoreconf -vfi
+fi
 
 mkdir build
 cd build
@@ -17,7 +24,9 @@ fi
 ../configure --prefix=$PREFIX --enable-cxx --enable-fat --host=$GMP_HOST
 
 make -j${CPU_COUNT}
+if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
 make check -j${CPU_COUNT}
+fi
 make install
 
 if [[ "$target_platform" == "linux-ppc64le" ]]; then
