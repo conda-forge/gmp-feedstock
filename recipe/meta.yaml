@@ -5,9 +5,12 @@ package:
   version: {{ version }}
 
 source:
-  fn: gmp-{{ version }}.tar.bz2
   url: https://gmplib.org/download/gmp/gmp-{{ version }}.tar.bz2
   sha256: f51c99cb114deb21a60075ffb494c1a210eb9d7cb729ed042ddb7de9534451ea
+  patches:
+    # Patch taken from homebrew. https://raw.githubusercontent.com/Homebrew/formula-patches/c53834b4/gmp/6.2.0-arm.patch
+    # Originially from https://gmplib.org/list-archives/gmp-bugs/2020-July/004837.html
+    - 6.2.0-arm.patch
 
 build:
   number: 2
@@ -41,7 +44,7 @@ test:
 
 about:
   home: http://gmplib.org/
-  license: GPL 2 and LGPL 3
+  license: GPL-2.0-or-later AND LGPL-3.0-or-later
   license_file: COPYING.LESSERv3
   summary: The GNU multiprecision library.
 
