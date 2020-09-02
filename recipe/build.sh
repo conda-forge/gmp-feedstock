@@ -7,7 +7,7 @@ shopt -s extglob
 chmod +x configure
 
 if [[ "$target_platform" == osx-arm64 ]]; then
-  ./autoreconf -vfi
+  autoreconf -vfi
 fi
 
 mkdir build
