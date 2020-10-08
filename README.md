@@ -3,13 +3,11 @@ About gmp
 
 Home: http://gmplib.org/
 
-Package license: GPL 2 and LGPL 3
+Package license: GPL-2.0-or-later AND LGPL-3.0-or-later
 
-Feedstock license: BSD-3-Clause
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/gmp-feedstock/blob/master/LICENSE.txt)
 
 Summary: The GNU multiprecision library.
-
-
 
 Current build status
 ====================
