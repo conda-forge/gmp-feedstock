@@ -13,7 +13,7 @@ source:
     - 6.2.0-arm.patch  # [osx and arm64]
 
 build:
-  number: 3
+  number: 4
   skip: true  # [win]
   run_exports:
     - {{ pin_subpackage("gmp") }}
