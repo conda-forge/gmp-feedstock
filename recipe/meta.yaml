@@ -1,4 +1,4 @@
-{% set version = "6.2.0" %}
+{% set version = "6.2.1" %}
 
 package:
   name: gmp
@@ -6,14 +6,14 @@ package:
 
 source:
   url: https://gmplib.org/download/gmp/gmp-{{ version }}.tar.bz2
-  sha256: f51c99cb114deb21a60075ffb494c1a210eb9d7cb729ed042ddb7de9534451ea
+  sha256: eae9326beb4158c386e39a356818031bd28f3124cf915f8c5b1dc4c7a36b4d7c
   patches:
     # Patch taken from homebrew. https://raw.githubusercontent.com/Homebrew/formula-patches/c53834b4/gmp/6.2.0-arm.patch
     # Originially from https://gmplib.org/list-archives/gmp-bugs/2020-July/004837.html
     - 6.2.0-arm.patch  # [osx and arm64]
 
 build:
-  number: 4
+  number: 0
   skip: true  # [win]
   run_exports:
     - {{ pin_subpackage("gmp") }}
