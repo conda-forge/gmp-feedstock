@@ -1,14 +1,10 @@
 #!/bin/bash
 # Get an updated config.sub and config.guess
-cp $BUILD_PREFIX/share/libtool/build-aux/config.guess config.fsf.guess
-cp $BUILD_PREFIX/share/libtool/build-aux/config.sub config.fsf.sub
+cp $BUILD_PREFIX/share/gnuconfig/config.guess config.fsf.guess
+cp $BUILD_PREFIX/share/gnuconfig/config.sub config.fsf.sub
 
 shopt -s extglob
 chmod +x configure
-
-if [[ "$target_platform" == osx-arm64 ]]; then
-  autoreconf -vfi
-fi
 
 mkdir build
 cd build
@@ -25,7 +21,7 @@ fi
 
 make -j${CPU_COUNT}
 if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
-make check -j${CPU_COUNT}
+  make check -j${CPU_COUNT}
 fi
 make install
 
@@ -43,5 +39,7 @@ if [[ "$target_platform" == "linux-ppc64le" ]]; then
     # This is only done for powerpc because GMP has a fat binary for x86 and I
     # couldn't find how to do it for arm64 and not sure whether that's beneficial.
     mkdir -p $PREFIX/lib/power9
+    mkdir -p $PREFIX/lib/power10
     cp $PWD/install$PREFIX/lib/libgmp.so.+([0-9]) $PREFIX/lib/power9
+    cp $PWD/install$PREFIX/lib/libgmp.so.+([0-9]) $PREFIX/lib/power10
 fi
