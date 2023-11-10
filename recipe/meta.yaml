@@ -5,7 +5,9 @@ package:
   version: {{ version }}
 
 source:
-  url: https://gmplib.org/download/gmp/gmp-{{ version }}.tar.xz
+  url:
+    - https://gmplib.org/download/gmp/gmp-{{ version }}.tar.xz
+    - https://ftp.gnu.org/gnu/gmp/gmp-{{ version }}.tar.xz
   sha256: a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898
 
 build:
