@@ -17,7 +17,7 @@ else
   GMP_HOST=$HOST
 fi
 
-../configure --prefix=$PREFIX --enable-cxx --enable-fat --host=$GMP_HOST
+../configure --prefix=$PREFIX --enable-cxx --enable-fat --host=$GMP_HOST --with-pic
 
 make -j${CPU_COUNT}
 if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
@@ -29,7 +29,7 @@ if [[ "$target_platform" == "linux-ppc64le" ]]; then
     # Build a Power9 library as well
     cd .. && mkdir build2 && cd build2
     CFLAGS=$(echo "${CFLAGS}" | sed "s/=power8/=power9/g")
-    ../configure --prefix=$PREFIX --enable-cxx --enable-fat --host="power9-pc-linux-gnu"
+    ../configure --prefix=$PREFIX --enable-cxx --enable-fat --host="power9-pc-linux-gnu" --with-pic
     make -j${CPU_COUNT}
     make install DESTDIR=$PWD/install
     # Install just the library to $PREFIX/lib/power9
