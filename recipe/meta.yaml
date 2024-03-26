@@ -31,10 +31,10 @@ test:
   files:
     - test.c
   commands:
-    - test -f ${PREFIX}/lib/libgmp.a        # [unix]
+    - test ! -f ${PREFIX}/lib/libgmp.a      # [unix]
     - test -f ${PREFIX}/lib/libgmp.dylib    # [osx]
     - test -f ${PREFIX}/lib/libgmp.so       # [linux]
-    - test -f ${PREFIX}/lib/libgmpxx.a      # [unix]
+    - test ! -f ${PREFIX}/lib/libgmpxx.a    # [unix]
     - test -f ${PREFIX}/lib/libgmpxx.dylib  # [osx]
     - test -f ${PREFIX}/lib/libgmpxx.so     # [linux]
 
