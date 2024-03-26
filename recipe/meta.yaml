@@ -5,13 +5,14 @@ package:
   version: {{ version }}
 
 source:
-  url:
-    - https://gmplib.org/download/gmp/gmp-{{ version }}.tar.xz
-    - https://ftp.gnu.org/gnu/gmp/gmp-{{ version }}.tar.xz
+  # GMP maintainers are blocking Github servers because
+  # of a DOS from a heavy Github action.
+  # url: https://gmplib.org/download/gmp/gmp-{{ version }}.tar.xz
+  url: https://ftp.gnu.org/gnu/gmp/gmp-{{ version }}.tar.xz
   sha256: a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win]
   run_exports:
     - {{ pin_subpackage("gmp") }}
@@ -23,20 +24,17 @@ requirements:
     - {{ compiler('cxx') }}
     - m4
     - make
-  host:
 
 test:
   requires:
     - {{ compiler('c') }}
-
   files:
     - test.c
-
   commands:
-    - test -f ${PREFIX}/lib/libgmp.a        # [unix]
+    - test ! -f ${PREFIX}/lib/libgmp.a      # [unix]
     - test -f ${PREFIX}/lib/libgmp.dylib    # [osx]
     - test -f ${PREFIX}/lib/libgmp.so       # [linux]
-    - test -f ${PREFIX}/lib/libgmpxx.a      # [unix]
+    - test ! -f ${PREFIX}/lib/libgmpxx.a    # [unix]
     - test -f ${PREFIX}/lib/libgmpxx.dylib  # [osx]
     - test -f ${PREFIX}/lib/libgmpxx.so     # [linux]
 
