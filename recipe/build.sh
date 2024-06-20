@@ -23,7 +23,12 @@ else
   CONFIGURE_ARGS="$CONFIGURE_ARGS --enable-cxx"
 fi
 
-../configure --prefix=${PREFIX} --enable-fat --enable-shared --disable-static $CONFIGURE_ARGS
+../configure \
+  --prefix=${PREFIX} \
+  --enable-fat \
+  --enable-shared \
+  --disable-static \
+  $CONFIGURE_ARGS || (cat config.log; exit 1)
 
 make -j${CPU_COUNT}
 if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
