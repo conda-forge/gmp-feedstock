@@ -1,5 +1,5 @@
-echo conda activate "${BUILD_PREFIX}"    > conda_build.sh
-echo conda activate --stack "${PREFIX}" >> conda_build.sh
+echo conda.bat activate "${BUILD_PREFIX}"    > conda_build.sh
+echo conda.bat activate --stack "${PREFIX}" >> conda_build.sh
 type "%RECIPE_DIR%\build.sh"            >> conda_build.sh
 
 set PREFIX=%PREFIX:\=/%
