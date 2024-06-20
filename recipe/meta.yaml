@@ -27,7 +27,8 @@ requirements:
     - {{ compiler('cxx') }}  # [not win]
     - {{ posix }}m4
     - {{ posix }}make
-    - {{ posix }}bash
+    - {{ posix }}base        # [build_platform.startswith("win-")]
+    - gendef                 # [win]
   host:
   run_constrained:
     - mpir <0.0a0   # [win]
