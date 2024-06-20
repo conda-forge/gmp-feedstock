@@ -28,6 +28,7 @@ requirements:
     - {{ posix }}m4
     - {{ posix }}make
     - {{ posix }}base        # [build_platform.startswith("win-")]
+    - {{ posix }}diffutils   # [build_platform.startswith("win-")]
     - gendef                 # [win]
   host:
   run_constrained:
