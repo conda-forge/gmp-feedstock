@@ -1,4 +1,5 @@
 {% set version = "6.3.0" %}
+{% set posix = "m2-" if build_platform.startswith("win-") else '' %}
 
 package:
   name: gmp
@@ -11,34 +12,41 @@ source:
   sha256: a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898
 
 build:
-  number: 1
-  skip: true  # [win]
+  number: 2
   run_exports:
     - {{ pin_subpackage("gmp") }}
 
 requirements:
   build:
-    - gnuconfig  # [unix]
+    - gnuconfig
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - m4
-    - make
+    - {{ compiler('cxx') }}  # [not win]
+    - {{ posix }}m4
+    - {{ posix }}make
+    - {{ posix }}bash
   host:
+  run_constrained:
+    - mpir <0.0a0   # [win]
 
 test:
   requires:
     - {{ compiler('c') }}
+    - {{ stdlib('c') }}
 
   files:
     - test.c
 
   commands:
-    - test -f ${PREFIX}/lib/libgmp.a        # [unix]
+    - test ! -f ${PREFIX}/lib/libgmp.a      # [unix]
     - test -f ${PREFIX}/lib/libgmp.dylib    # [osx]
     - test -f ${PREFIX}/lib/libgmp.so       # [linux]
-    - test -f ${PREFIX}/lib/libgmpxx.a      # [unix]
+    - test ! -f ${PREFIX}/lib/libgmpxx.a    # [unix]
     - test -f ${PREFIX}/lib/libgmpxx.dylib  # [osx]
     - test -f ${PREFIX}/lib/libgmpxx.so     # [linux]
+    - if not exist %LIBRARY_BIN%\libgmp-10.dll exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\libgmp.dll.a exit 1   # [win]
+    - if not exist %LIBRARY_LIB%\gmp.lib exit 1        # [win]
 
 about:
   home: http://gmplib.org/
