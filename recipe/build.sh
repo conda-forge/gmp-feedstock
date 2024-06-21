@@ -12,12 +12,23 @@ cd build
 if [[ "$target_platform" == "linux-ppc64le" ]]; then
   # HOST="powerpc64le-conda-linux-gnu" masks the fact that we are only
   # building for power8 and uses an older POWER architecture.
-  GMP_HOST="power8-pc-linux-gnu"
+  CONFIGURE_ARGS="--host=power8-pc-linux-gnu"
 else
-  GMP_HOST=$HOST
+  CONFIGURE_ARGS="--host=$HOST"
 fi
 
-../configure --prefix=$PREFIX --enable-cxx --enable-fat --host=$GMP_HOST
+if [[ "$target_platform" == "win-64" ]]; then
+  export PREFIX=${PREFIX}/Library
+else
+  CONFIGURE_ARGS="$CONFIGURE_ARGS --enable-cxx"
+fi
+
+../configure \
+  --prefix=${PREFIX} \
+  --enable-fat \
+  --enable-shared \
+  --disable-static \
+  $CONFIGURE_ARGS || (cat config.log; exit 1)
 
 make -j${CPU_COUNT}
 if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
@@ -25,11 +36,16 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
 fi
 make install
 
+if [[ "$target_platform" == "win-64" ]]; then
+  gendef $PREFIX/bin/libgmp-10.dll
+  $HOST-dlltool -d libgmp-10.def -l $PREFIX/lib/gmp.lib
+fi
+
 if [[ "$target_platform" == "linux-ppc64le" ]]; then
     # Build a Power9 library as well
     cd .. && mkdir build2 && cd build2
     CFLAGS=$(echo "${CFLAGS}" | sed "s/=power8/=power9/g")
-    ../configure --prefix=$PREFIX --enable-cxx --enable-fat --host="power9-pc-linux-gnu"
+    ../configure --prefix=${PREFIX} $CONFIGURE_ARGS --host="power9-pc-linux-gnu"
     make -j${CPU_COUNT}
     make install DESTDIR=$PWD/install
     # Install just the library to $PREFIX/lib/power9
