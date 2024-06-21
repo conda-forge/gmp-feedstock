@@ -1,4 +1,5 @@
 echo source %SYS_PREFIX:\=/%/etc/profile.d/conda.sh    > conda_build.sh
+echo env                                              >> conda_build.sh
 echo conda activate "${BUILD_PREFIX}"                 >> conda_build.sh
 echo conda activate --stack "${PREFIX}"               >> conda_build.sh
 type "%RECIPE_DIR%\build.sh"                          >> conda_build.sh
