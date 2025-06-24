@@ -1,0 +1,85 @@
+context:
+  version: "6.3.0"
+  posix: ${{ "m2-" if (build_platform | split("-"))[0] == "win" else "" }}
+
+package:
+  name: gmp
+  version: ${{ version }}
+
+source:
+  url:
+    - https://ftp.gnu.org/gnu/gmp/gmp-${{ version }}.tar.xz
+    - https://gmplib.org/download/gmp/gmp-${{ version }}.tar.xz    
+  sha256: a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898
+
+build:
+  number: 3
+
+requirements:
+  build:
+    - if: win
+      then: 
+        - ${{ compiler('c') }} <15
+        - gendef
+      else: 
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+    - gnuconfig
+    - ${{ stdlib('c') }}
+    - ${{ posix }}m4
+    - ${{ posix }}make
+    - if: osx
+      then: ${{ posix }}flex
+    - if: win
+      then:
+        - ${{ posix }}base
+        - ${{ posix }}diffutils
+  run_exports:
+    - ${{ pin_subpackage("gmp") }}
+  run_constraints:
+    - if: win
+      then: mpir <0.0a0
+
+tests:
+  - if: unix
+    then:
+      - package_contents:
+          lib:
+            exists:
+              - gmp
+              - gmpxx
+            not_exists:
+              - libgmp.a
+              - libgmpxx.a
+    else:
+      - package_contents:
+          files:
+            - Library/lib/libgmp.dll.a
+          lib:
+            - libgmp-10.dll
+            - gmp.lib
+  - if: unix
+    then:
+      - script:
+          - ${CC} -I ${PREFIX}/include -L ${PREFIX}/lib test.c -lgmp -Wl,-rpath,${PREFIX}/lib -o test.out
+          - ./test.out
+        files:
+          recipe:
+            - test.c
+        requirements:
+          run:
+            - ${{ compiler('c') }}
+            - ${{ stdlib('c') }}
+
+
+about:
+  homepage: http://gmplib.org/
+  license: GPL-2.0-or-later OR LGPL-3.0-or-later
+  license_file: COPYING.LESSERv3
+  summary: The GNU multiprecision library.
+
+extra:
+  recipe-maintainers:
+    - asmeurer
+    - isuruf
+    - jakirkham

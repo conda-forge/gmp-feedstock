@@ -17,7 +17,7 @@ else
   CONFIGURE_ARGS="--host=$HOST"
 fi
 
-if [[ "$target_platform" == "win-64" ]]; then
+if [[ "$target_platform" == win\-* ]]; then
   export PREFIX=${PREFIX}/Library
 else
   CONFIGURE_ARGS="$CONFIGURE_ARGS --enable-cxx"
@@ -36,7 +36,7 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
 fi
 make install
 
-if [[ "$target_platform" == "win-64" ]]; then
+if [[ "$target_platform" == win\-* ]]; then
   gendef $PREFIX/bin/libgmp-10.dll
   $HOST-dlltool -d libgmp-10.def -l $PREFIX/lib/gmp.lib
 fi
