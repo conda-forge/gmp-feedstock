@@ -31,6 +31,7 @@ requirements:
     - {{ posix }}base        # [build_platform.startswith("win-")]
     - {{ posix }}diffutils   # [build_platform.startswith("win-")]
     - {{ posix }}make
+    - {{ posix }}m4
     - gendef                 # [win]
   host:
   run_constrained:
