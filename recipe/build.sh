@@ -19,9 +19,10 @@ fi
 
 if [[ "$target_platform" == "win-64" ]]; then
   export PREFIX=${PREFIX}/Library
-else
-  CONFIGURE_ARGS="$CONFIGURE_ARGS --enable-cxx"
 fi
+
+CONFIGURE_ARGS="$CONFIGURE_ARGS --enable-cxx"
+
 
 ../configure \
   --prefix=${PREFIX} \
