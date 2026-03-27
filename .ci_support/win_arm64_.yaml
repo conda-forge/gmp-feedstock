@@ -9,4 +9,4 @@ channel_targets:
 gmp:
 - '6'
 target_platform:
-- win-64
+- win-arm64
