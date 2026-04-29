@@ -1,0 +1,6 @@
+c_compiler:
+  - if: win
+    then: gcc
+c_stdlib:
+  - if: win
+    then: m2w64-sysroot
