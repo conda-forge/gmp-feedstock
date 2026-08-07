@@ -6,6 +6,10 @@ cp $BUILD_PREFIX/share/gnuconfig/config.sub config.fsf.sub
 shopt -s extglob
 chmod +x configure
 
+# GMP 6.3.0 predates C23. Its configure probes rely on pre-C23 semantics for
+# empty parameter lists, so retain the previous GCC default dialect.
+export CFLAGS="${CFLAGS} -std=gnu17"
+
 mkdir build
 cd build
 
