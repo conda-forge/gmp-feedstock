@@ -92,6 +92,7 @@ else
 fi
 
 if [[ "$target_platform" == "win-arm64" ]]; then
+  # GMP only supports fat binaries with runtime CPU dispatch on x86.
   FAT_ARG="--disable-fat"
 else
   FAT_ARG="--enable-fat"
