@@ -13,6 +13,8 @@ source:
     - https://ftp.gnu.org/gnu/gmp/gmp-${{ version }}.tar.xz
   sha256: a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898
   patches:
+    # Upstream fix so gmp_sprintf and friends keep embedded NUL characters.
+    - patches/0006-preserve-printf-null-characters.patch
     - if: target_platform == "win-arm64"
       then:
         # The ARM64 COFF and MSVC DLL portions are adapted from vcpkg's
@@ -22,7 +24,6 @@ source:
         - patches/0003-fix-msvc-dll-symbols.patch
         - patches/0004-disable-unavailable-spinner.patch
         - patches/0005-guard-reuse-test-unistd.patch
-        - patches/0006-preserve-printf-null-characters.patch
 
 build:
   number: 3
@@ -97,19 +98,24 @@ tests:
       files:
         recipe:
           - test.c
+          - test_printf_nul.c
       requirements:
         build:
           - ${{ compiler('c') }}
           - ${{ stdlib('c') }}
       script:
         - $CC -I$PREFIX/include -L$PREFIX/lib test.c -lgmp -Wl,-rpath,$PREFIX/lib -o test.out
+        - $CC -I$PREFIX/include -L$PREFIX/lib test_printf_nul.c -lgmp -Wl,-rpath,$PREFIX/lib -o test_printf_nul.out
         - if: build_platform == target_platform
-          then: ./test.out
+          then:
+            - ./test.out
+            - ./test_printf_nul.out
   - if: win
     then:
       files:
         recipe:
           - test.c
+          - test_printf_nul.c
       requirements:
         build:
           - ${{ compiler('c') }}
@@ -117,9 +123,11 @@ tests:
       script:
         - cl test.c /I%LIBRARY_INC% %LIBRARY_LIB%\gmp.lib /Fe:test.exe
         - test.exe
+        - cl test_printf_nul.c /I%LIBRARY_INC% %LIBRARY_LIB%\gmp.lib /Fe:test_printf_nul.exe
+        - test_printf_nul.exe
         # Give Windows time to release the executable before rattler-build removes the test directory.
         - ping 127.0.0.1 -n 3 > nul
-        - del /F /Q test.exe test.obj
+        - del /F /Q test.exe test.obj test_printf_nul.exe test_printf_nul.obj
 
 about:
   homepage: http://gmplib.org/
