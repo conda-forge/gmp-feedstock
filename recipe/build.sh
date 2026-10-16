@@ -145,6 +145,8 @@ elif [[ "$target_platform" == "win-arm64" ]]; then
   elif [[ -f "$PREFIX/lib/libgmp.dll.lib" ]]; then
     mv "$PREFIX/lib/libgmp.dll.lib" "$PREFIX/lib/gmp.lib"
   fi
+  # The libtool archive still points at the pre-rename paths above.
+  rm -f "$PREFIX/lib/libgmp.la"
   if [[ ! -f "$PREFIX/bin/gmp-10.dll" || ! -f "$PREFIX/lib/gmp.lib" ]]; then
     echo "GMP did not install the expected native DLL and import library" >&2
     find "$PREFIX/bin" "$PREFIX/lib" -maxdepth 1 -type f -print >&2
